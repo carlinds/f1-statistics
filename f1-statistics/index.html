@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Didact Gothic"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <script defer src="src/js/controller.js"></script>
+    <title>Formula Juan</title>
+  </head>
+  <body>
+    <main>
+      <div id="header">
+        <img src="src/img/f1_logo.png" id="logo"></img><h1 id="logo__text">Analyzer</h1>
+      </div>
+      <div id="container">
+        <div id="right" class="column">
+          <div id="canvas__container">
+            <canvas id="chart"></canvas>
+          </div>
+          <div id="driver__info">Test</div>
+        </div>
+        <div id="left" class="column">
+          <div class="race__container">
+            <select id="race__name">
+              <!-- <option value="last" selected>Last race</option> -->
+            </select>
+            <button id="search__button" type="submit">
+              <i class="fa fa-search"></i>
+            </button>
+          </div>
+
+          <table class="styled-table">
+            <thead>
+              <tr>
+                <th>Position</th>
+                <th>Name</th>
+                <th>Number</th>
+                <th>Constructor</th>
+                <th>Points</th>
+              </tr>
+            </thead>
+            <tbody class="table-body">
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div id="bottom">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      </div>
+      <div id="footer">GitHub: <a href="url">https://github.com/carlinds</a></div>
+    </main>
+  </body>
+</html>

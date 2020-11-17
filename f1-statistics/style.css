@@ -1,0 +1,145 @@
+body {
+  min-width: 1200px;
+  font-family: 'Didact Gothic';
+}
+
+#container {
+  min-width: 1000px;
+  padding-left: 640px; /* LC width */
+  padding-right: 40px;
+}
+
+#container .column {
+  float: left;
+  position: relative;
+}
+
+#right {
+  padding: 20px 20px;
+  width: 100%;
+}
+
+#left {
+  width: 600px; /* LC width */
+  padding: 20px;
+  margin-left: -100%;
+  right: 680px;
+}
+
+#header {
+  height: 50px;
+  min-width: 1630px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+}
+
+#bottom {
+  clear: both;
+  background-color: #2196f3;
+  padding: 20px;
+  margin-bottom: 50px;
+  height: 50px;
+  min-width: 1630px;
+}
+
+#footer {
+  height: 20px;
+  width: 100%;
+  position: fixed;
+  left: 0;
+  bottom: 0px;
+  padding: 5px 20px 5px 20px;
+  background-color: white;
+  border-top: 2px solid #616161;
+}
+
+#canvas__container {
+  margin-left: 0%;
+  margin-bottom: 50px;
+  width: 95%;
+  min-height: 600px;
+}
+
+#driver__info {
+  height: 300px;
+  padding: 20px;
+  background-color: indianred;
+}
+
+#logo {
+  height: 50px;
+  margin: 0px 20px 0px 20px;
+  float: left;
+  vertical-align: middle;
+}
+
+.constructor__logo {
+  height: 2.5em;
+  margin: 0px 10px;
+  vertical-align: middle;
+}
+
+.race__container {
+  min-width: 500px;
+}
+
+.race__container select {
+  padding: 10px;
+  border: none;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  float: left;
+  width: 400px;
+  background: #e4e4e4;
+}
+
+.race__container button {
+  float: left;
+  width: 150px;
+  padding: 10px;
+  background: #2196f3;
+  color: white;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  border: none; /* Prevent double borders */
+  cursor: pointer;
+}
+
+.styled-table {
+  border-collapse: collapse;
+  font-size: 12px;
+  margin: 50px 0;
+  width: 550px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.styled-table thead tr {
+  text-align: left;
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 12px 15px;
+  vertical-align: middle;
+}
+
+.styled-table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+  border-bottom: 2px solid #2196f3;
+}
+
+.styled-table tbody tr:hover {
+  font-weight: bold;
+  color: #2196f3;
+  cursor: pointer;
+}
+
+.selected-row {
+  background-color: rgba(33, 150, 243, 0.5) !important;
+}
