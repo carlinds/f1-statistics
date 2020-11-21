@@ -102,7 +102,7 @@ const getCumulativeConstructorStandings = async function (season, raceIndex) {
 };
 
 const getRaceList = async function (season) {
-  const res = await fetch(`http://ergast.com/api/f1/${season}.json`);
+  const res = await fetch(`https://ergast.com/api/f1/${season}.json`);
   if (!res.ok) {
     throw new Error('Could not fetch race list.');
   }
