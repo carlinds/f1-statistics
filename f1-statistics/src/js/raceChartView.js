@@ -13,8 +13,8 @@ const constructorColors = {
   williams: 'rgba(245, 245, 245, 0.8)',
 };
 
-class ChartView {
-  _ctx = document.getElementById('chart').getContext('2d');
+class RaceChartView {
+  _ctx = document.getElementById('race__chart').getContext('2d');
 
   _chart = new Chart(this._ctx, {
     type: 'line',
@@ -67,4 +67,4 @@ class ChartView {
   }
 }
 
-export default new ChartView();
+export default new RaceChartView();

@@ -19,20 +19,26 @@
   <body>
     <main>
       <div id="header">
-        <img src="src/img/f1_logo.png" id="logo"></img><h1 id="logo__text">Analyzer</h1>
+        <img src="src/img/icons/f1_logo.png" id="logo"></img><h1 id="logo__text">Analyzer</h1>
       </div>
       <div id="container">
         <div id="right" class="column">
-          <div id="canvas__container">
-            <canvas id="chart"></canvas>
+          <div id="race__canvas__container">
+            <canvas id="race__chart"></canvas>
           </div>
-          <div id="driver__info">Test</div>
+          <div id="driver__info">
+            <div id="driver__image__container">
+              <img src="" id="driver__image"></img>
+            </div>
+            <div id="driver__text__container"></div>
+            <div id="driver__canvas__container">
+              <canvas id="driver__chart"></canvas>
+            </div>
+          </div>
         </div>
         <div id="left" class="column">
-          <div class="race__container">
-            <select id="race__name">
-              <!-- <option value="last" selected>Last race</option> -->
-            </select>
+          <div class="race-container">
+            <select id="race__name"></select>
             <button id="search__button" type="submit">
               <i class="fa fa-search"></i>
             </button>
@@ -54,9 +60,9 @@
         </div>
       </div>
       <div id="bottom">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        All data is fetched using the Ergast Developer API, available at <a href="https://ergast.com/mrd/" target="_blank">https://ergast.com/mrd/</a>.
       </div>
-      <div id="footer">GitHub: <a href="url">https://github.com/carlinds</a></div>
+      <div id="footer">GitHub: <a href="https://github.com/carlinds" target="_blank">https://github.com/carlinds</a></div>
     </main>
   </body>
 </html>

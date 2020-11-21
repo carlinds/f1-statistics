@@ -1,9 +1,9 @@
-import icons from '../img/*.png';
+import icons from "../img/icons/*.png";
 
 class TableView {
-  _tableBodyElement = document.querySelector('.table-body');
-  _searchFieldElement = document.querySelector('#race__name');
-  _searchButtonElement = document.querySelector('#search__button');
+  _tableBodyElement = document.querySelector(".table-body");
+  _searchFieldElement = document.querySelector("#race__name");
+  _searchButtonElement = document.querySelector("#search__button");
 
   init() {
     for (let i = 0; i < 20; i++) {
@@ -15,20 +15,20 @@ class TableView {
           <td></img></td>
           <td></td>
         </tr>`;
-      this._tableBodyElement.insertAdjacentHTML('beforeend', html);
+      this._tableBodyElement.insertAdjacentHTML("beforeend", html);
     }
   }
 
   addHandlerSearch(handler) {
-    this._searchButtonElement.addEventListener('click', function () {
+    this._searchButtonElement.addEventListener("click", function () {
       handler();
     });
   }
 
   addHandlerDriverSelection(handler) {
-    const rows = document.querySelectorAll('.table-row');
-    rows.forEach(element => {
-      element.addEventListener('click', function () {
+    const rows = document.querySelectorAll(".table-row");
+    rows.forEach((element) => {
+      element.addEventListener("click", function () {
         TableView.rowSelector(this);
         handler();
       });
@@ -36,30 +36,31 @@ class TableView {
   }
 
   renderRaceEntries(data) {
-    data.forEach(element => {
+    data.forEach((element) => {
       const html = `
           <option value="${element.round}">${element.raceName}</option>
         `;
 
-      this._searchFieldElement.insertAdjacentHTML('beforeend', html);
+      this._searchFieldElement.insertAdjacentHTML("beforeend", html);
     });
     const lastHtml = '<option value="last" selected>Last race</option>';
-    this._searchFieldElement.insertAdjacentHTML('afterbegin', lastHtml);
+    this._searchFieldElement.insertAdjacentHTML("afterbegin", lastHtml);
   }
 
   renderRaceResults(data) {
-    const rows = document.querySelectorAll('.table-row');
+    const rows = document.querySelectorAll(".table-row");
 
     for (let i = 0; i < data.length; i++) {
       const dataEntry = data[i];
       let row = rows[i];
-      const img_name = dataEntry.Constructor.constructorId + '_logo';
+      row.id = dataEntry.Driver.driverId;
+      const img_name = dataEntry.Constructor.constructorId + "_logo";
       row.innerHTML = `
-          <tr class="table-row" id="${dataEntry.Driver.driverId}">
+          <tr>
               <td>${dataEntry.position}</td>
               <td>${dataEntry.Driver.givenName} ${dataEntry.Driver.familyName}</td>
               <td>${dataEntry.number}</td>
-              <td><img src="${icons[img_name]}" class="constructor__logo"></img>${dataEntry.Constructor.name}</td>
+              <td><img src="${icons[img_name]}" class="constructor-logo"></img>${dataEntry.Constructor.name}</td>
               <td>${dataEntry.points}</td>
           </tr>
         `;
@@ -68,13 +69,13 @@ class TableView {
 
   static rowSelector(row) {
     // Remove prev. selected row
-    const rows = document.querySelectorAll('.table-row');
-    rows.forEach(element => {
-      element.classList.remove('selected-row');
+    const rows = document.querySelectorAll(".table-row");
+    rows.forEach((element) => {
+      element.classList.remove("selected-row");
     });
 
     // Highlight new selected row
-    row.classList.add('selected-row');
+    row.classList.add("selected-row");
   }
 }
 

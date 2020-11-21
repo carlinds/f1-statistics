@@ -44,16 +44,7 @@ export const fetchRaceResults = async function (season, raceName) {
 export const computeConstructorsDataset = async function (season, raceIndex) {
   // Hack to handle 'last' raceIndex
   if (raceIndex === 'last') {
-    let res = await fetch(
-      `https://ergast.com/api/f1/current/last/results.json`
-    );
-    if (!res.ok) {
-      throw new Error('Could not fetch race list.');
-    }
-    let data = await res.json();
-    let round = data.MRData.RaceTable.round;
-
-    raceIndex = round;
+    raceIndex = await getIndexOfLastRace();
   }
 
   const [
@@ -84,30 +75,46 @@ export const computeConstructorsDataset = async function (season, raceIndex) {
   return dataset;
 };
 
+const getIndexOfLastRace = async function () {
+  let res = await fetch(
+    `https://ergast.com/api/f1/current/last/results.json`
+  );
+  if (!res.ok) {
+    throw new Error('Could not fetch race list.');
+  }
+  let data = await res.json();
+  return data.MRData.RaceTable.round;
+};
+
 const getCumulativeConstructorStandings = async function (season, raceIndex) {
-  // Get list of race names
-  const res = await fetch(`http://ergast.com/api/f1/2020.json`);
+  const raceList = await getRaceList(season);
+
+  // Get constructor standings for each race
+  let data = [];
+  let raceNames = [];
+  for (let i = 0; i < raceIndex; i++) {
+    let standings = await fetchConstructorStandings(season, i + 1);
+    data[i] = standings;
+    raceNames[i] = raceList[i].raceName;
+  }
+
+  return [data, raceNames];
+};
+
+const getRaceList = async function (season) {
+  const res = await fetch(`http://ergast.com/api/f1/${season}.json`);
   if (!res.ok) {
     throw new Error('Could not fetch race list.');
   }
   const seasonData = await res.json();
 
-  // Get constructor standings for each race
-  let raceList = [];
-  let data = [];
-  for (let i = 0; i < raceIndex; i++) {
-    let standings = await fetchConstructorStandings(season, i + 1);
-    data[i] = standings;
-    raceList[i] = seasonData.MRData.RaceTable.Races[i]['raceName'];
-  }
+  return seasonData.MRData.RaceTable.Races;
+}
 
-  return [data, raceList];
-};
-
-export const fetchConstructorStandings = async function (season, raceName) {
+export const fetchConstructorStandings = async function (season, raceIndex) {
   try {
     const res = await fetch(
-      `https://ergast.com/api/f1/${season}/${raceName}/constructorStandings.json`
+      `https://ergast.com/api/f1/${season}/${raceIndex}/constructorStandings.json`
     );
     if (!res.ok) {
       throw new Error('Could not fetch constructor standings.');
@@ -142,3 +149,44 @@ export const fetchDriverInfo = async function (driverId) {
     console.error(err);
   }
 };
+
+export const computeDriverDataset = async function (season, raceIndex, driverInfo) {
+  // Hack to handle 'last' raceIndex
+  if (raceIndex === 'last') {
+    raceIndex = await getIndexOfLastRace();
+  }
+
+  const raceList = await getRaceList(season);
+  let raceNames = [];
+  for (let i = 0; i < raceIndex; i++) {
+    raceNames[i] = raceList[i].raceName;
+  }
+
+  const driverPoints = await getDriverPoints(season, raceIndex, driverInfo['driverId']);
+
+  return [driverPoints, raceNames, driverInfo];
+};
+
+const getDriverPoints = async function (season, raceIndex, driverId) {
+  // Get driver standings for each race
+  let driverPoints = [];
+  for (let i = 0; i < raceIndex; i++) {
+    let raceResults = await fetchRaceResults(season, i+1);
+    let driverFound = false;
+
+    for (let j = 0; j < raceResults.length; j++) {
+      let driver = raceResults[j];
+      if (driver['Driver']['driverId'] === driverId) {
+        driverPoints.push(parseInt(driver.points));
+        driverFound = true;
+        break;
+      }
+    }
+
+    if (!driverFound) {
+      driverPoints.push(0);
+    }
+  }
+  return driverPoints;
+};
+
