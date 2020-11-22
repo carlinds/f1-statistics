@@ -31,5 +31,19 @@ export const constructorColors = {
   'racing_point': 'rgba(245, 150, 200, 0.8)',
   'red_bull': 'rgba(30, 65, 255, 0.8)',
   'renault': 'rgba(255, 245, 0, 0.8)',
-  'williams': 'rgba(245, 245, 245, 0.8)',
+  'williams': 'rgba(127, 253, 255, 0.8)',
+};
+
+export const pointsTable = {
+  // Maps position to points
+  1: 25,
+  2: 18,
+  3: 15,
+  4: 12,
+  5: 10,
+  6: 8,
+  7: 6,
+  8: 4,
+  9: 2,
+  10: 1,
 };

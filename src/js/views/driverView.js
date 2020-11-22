@@ -1,10 +1,12 @@
 import driverImages from "../../img/driver_info/*.png";
+import { mean, std } from 'mathjs';
 
 class DriverView {
     _driverInfoElement = document.querySelector('#driver__info');
     _driverImageContainer = document.querySelector('#driver__image__container');
     _driverImageElement = document.querySelector('#driver__image');
     _driverTextContainer = document.querySelector('#driver__text__container');
+    _driverFantasyPointsContainer = document.querySelector('#driver__fantasy');
 
     renderDriverInfo(driverInfo) {
         this.renderDriverImage(driverInfo["driverId"]);
@@ -33,6 +35,58 @@ class DriverView {
                 </tr>
             </table>
         `;
+    };
+
+    renderFantasyPoints(dataset) {
+
+        let fantasyMean = Math.round(mean(dataset['results']['fantasyPoints']) * 100)/100;
+        let fantasyStd = Math.round(std(dataset['results']['fantasyPoints']) * 100)/100;
+
+        let htmlRows = ``;
+        for (let i = 0; i < dataset['raceNames'].length; i++) {
+            htmlRows += `
+                <tr>
+                    <td>${dataset['raceNames'][i]}</td>
+                    <td>${dataset['results']['fantasyPoints'][i]}</td>
+                </tr>`;
+        }
+
+        this._driverFantasyPointsContainer.innerHTML = `
+            <h1>Fantasy points</h1>
+            <table id="ftable__left" class="fantasy-table">
+                <thead>
+                    <tr>
+                        <th>Race</th>
+                        <th>Points</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${htmlRows}
+                </tbody>
+            </table>
+
+            <table id="ftable__right" class="fantasy-table">
+                <thead>
+                    <tr>
+                        <th>Points per race</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Mean</td>
+                        <td>${fantasyMean}</td>
+                    </tr>
+                    <tr>
+                        <td>Std</td>
+                        <td>${fantasyStd}</td>
+                    </tr>
+                    
+                </tbody>
+            </table>`
+        
+
+
     };
 };
 

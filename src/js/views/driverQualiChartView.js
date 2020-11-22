@@ -41,20 +41,39 @@ class DriverQualiChartView {
     const results = dataset['results'];
     const raceNames = dataset['raceNames'];
     const driverInfo = dataset['driverInfo'];
-    const constructor = mapping.constructorMap[driverInfo['driverId']];
+    const constructor = results['driver'][0]['Constructor']['constructorId'];
+
+    let driverQualiPos = [];
+    let teamMateQualiPos = [];
+    for (let i = 0; i < results['driver'].length; i++) {
+      for (let i = 0; i < results['driver'].length; i++) {
+        if (results['driver'][i] === null) {
+          driverQualiPos.push(null);
+        } else {
+          driverQualiPos.push(results['driver'][i]['grid']);
+        }
+        
+        if (results['teamMate'][i] === null) {
+          teamMateQualiPos.push(null);
+        } else {
+          teamMateQualiPos.push(results['teamMate'][i]['grid']);
+        }
+      };
+    };
 
     this._chart.data = {
       labels: raceNames,
       datasets: [{
         label: driverInfo['givenName'] + ' ' + driverInfo['familyName'],
-        data: results['driver']['startPos'],
+        data: driverQualiPos,
         backgroundColor: mapping.constructorColors[constructor],
         borderColor: mapping.constructorColors[constructor],
         fill: 'false',
       },
       {
-        label: results['teamMate']['name'][0],
-        data: results['teamMate']['startPos'],
+        label: results['teamMate'][0]['Driver']['givenName'] + ' ' 
+             + results['teamMate'][0]['Driver']['familyName'],
+        data: teamMateQualiPos,
         backgroundColor: mapping.constructorColors[constructor],
         borderColor: mapping.constructorColors[constructor],
         borderDash: [5, 15],

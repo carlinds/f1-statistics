@@ -14,7 +14,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
     <script defer src="src/js/controller.js"></script>
-    <title>Formula Juan</title>
+    <title>F1 Analyzer</title>
   </head>
   <body>
     <main>
@@ -27,14 +27,14 @@
             <canvas id="race__chart"></canvas>
           </div>
           <div id="driver__info">
-            <div id="driver__image__container">
+            <div id="driver__image__container" class="info-box">
               <img src="" id="driver__image"></img>
             </div>
-            <div id="driver__text__container"></div>
-            <div id="driver__race__canvas__container">
+            <div id="driver__text__container" class="info-box"></div>
+            <div id="driver__race__canvas__container" class="info-box">
               <canvas id="driver__race__chart"></canvas>
             </div>
-            <div id="driver__quali__canvas__container">
+            <div id="driver__quali__canvas__container" class="info-box">
               <canvas id="driver__quali__chart"></canvas>
             </div>
           </div>
@@ -60,6 +60,9 @@
             <tbody class="table-body">
             </tbody>
           </table>
+
+          <div id="driver__fantasy" class="info-box"></div>
+
         </div>
       </div>
       <div id="bottom">

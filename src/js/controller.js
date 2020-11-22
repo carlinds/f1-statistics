@@ -31,10 +31,11 @@ class Controller {
   controlDriverInfo() {
     model.fetchDriverInfo(document.querySelector('.selected-row').id)
     .then((driverInfo) => {
-      driverView.renderDriverInfo(driverInfo);
       return model.computeDriverDataset(season, 'last', driverInfo);
     })
     .then((dataset) => {
+      driverView.renderDriverInfo(dataset['driverInfo']);
+      driverView.renderFantasyPoints(dataset);
       driverRaceChartView.renderDataset(dataset);
       driverQualiChartView.renderDataset(dataset);
     });

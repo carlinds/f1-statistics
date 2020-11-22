@@ -41,20 +41,39 @@ class DriverRaceChartView {
     const results = dataset['results'];
     const raceNames = dataset['raceNames'];
     const driverInfo = dataset['driverInfo'];
-    const constructor = mapping.constructorMap[driverInfo['driverId']];
+    const constructor = results['driver'][0]['Constructor']['constructorId'];//mapping.constructorMap[driverInfo['driverId']];
+
+    console.log(results);
+
+    let driverPoints = [];
+    let teamMatePoints = [];
+    for (let i = 0; i < results['driver'].length; i++) {
+      if (results['driver'][i] === null) {
+        driverPoints.push(0);
+      } else {
+        driverPoints.push(results['driver'][i]['points']);
+      }
+      
+      if (results['teamMate'][i] === null) {
+        teamMatePoints.push(0);
+      } else {
+        teamMatePoints.push(results['teamMate'][i]['points']);
+      }
+    };
 
     this._chart.data = {
       labels: raceNames,
       datasets: [{
         label: driverInfo['givenName'] + ' ' + driverInfo['familyName'],
-        data: results['driver']['points'],
+        data: driverPoints,
         backgroundColor: mapping.constructorColors[constructor],
         borderColor: mapping.constructorColors[constructor],
         fill: 'false',
       },
       {
-        label: results['teamMate']['name'][0],
-        data: results['teamMate']['points'],
+        label: results['teamMate'][0]['Driver']['givenName'] + ' ' 
+             + results['teamMate'][0]['Driver']['familyName'],
+        data: teamMatePoints,
         backgroundColor: mapping.constructorColors[constructor],
         borderColor: mapping.constructorColors[constructor],
         borderDash: [5, 15],

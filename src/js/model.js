@@ -163,9 +163,9 @@ export const computeDriverDataset = async function (season, raceIndex, driverInf
     raceNames[i] = raceList[i].raceName;
   }
 
-  const driverRaceResults = await getDriverRaceResults(season, raceIndex, driverInfo);
+  const raceResults = await getDriverRaceResults(season, raceIndex, driverInfo);
 
-  return {'results': driverRaceResults,
+  return {'results': raceResults,
           'raceNames': raceNames,
           'driverInfo': driverInfo};
 };
@@ -174,24 +174,9 @@ const getDriverRaceResults = async function (season, raceIndex, driverInfo) {
   const driverId = driverInfo['driverId'];
   const constructor = mapping.constructorMap[driverInfo['driverId']];
 
-  let driver = {
-    points: [],
-    startPos: [],
-    finishPos: [],
-  }
-
-  let teamMate = {
-    id: [],
-    name: [],
-    points: [],
-    startPos: [],
-    finishPos: [],
-  }
-
-  let beatTeamMate = {
-    race: [],
-    quali: [],
-  }
+  let driver = [];
+  let teamMate = [];
+  let fantasyPoints = [];
 
   // Loop over races
   for (let i = 0; i < raceIndex; i++) {
@@ -206,16 +191,10 @@ const getDriverRaceResults = async function (season, raceIndex, driverInfo) {
 
       if (mapping.constructorMap[currDriverId] === constructor) {
         if (currDriverId === driverId) {
-          driver['points'].push(parseInt(currDriver.points));
-          driver['finishPos'].push(parseInt(currDriver.position));
-          driver['startPos'].push(parseInt(currDriver.grid));
+          driver.push(currDriver);
           driverFound = true;
         } else {
-          teamMate['name'].push(currDriver['Driver']['givenName'] + ' ' + currDriver['Driver']['familyName']);
-          teamMate['id'].push(currDriverId);
-          teamMate['points'].push(parseInt(currDriver.points));
-          teamMate['finishPos'].push(parseInt(currDriver.position));
-          teamMate['startPos'].push(parseInt(currDriver.grid));
+          teamMate.push(currDriver);
           teamMateFound = true;
         }
       }
@@ -223,22 +202,85 @@ const getDriverRaceResults = async function (season, raceIndex, driverInfo) {
 
     // Special case when driver not in race
     if (!driverFound) {
-      driver['points'].push(0);
-      driver['finishPos'].push(null);
-      driver['startPos'].push(null);
+      driver.push(null);
     }
     if (!teamMateFound) {
-      teamMate['id'].push(null);
-      teamMate['points'].push(0);
-      teamMate['finishPos'].push(null);
-      teamMate['startPos'].push(null);
+      teamMate.push(null);
     }
 
-    beatTeamMate['race'].push(driver['finishPos'][i] < teamMate['finishPos'][i]);
-    beatTeamMate['quali'].push(driver['startPos'][i] < teamMate['startPos'][i]);
+    fantasyPoints.push(calculateFantasyPoints(driver[i], teamMate[i]));
   }
   return {'driver': driver,
           'teamMate': teamMate,
-          'beatTeamMate': beatTeamMate};
+          'fantasyPoints': fantasyPoints};
 };
 
+const calculateFantasyPoints = function(driver, teamMate) {
+  let fantasyPoints = 0;
+
+  if (driver === null) {
+    return;
+  }
+
+  let teamMateStartPos, teamMateFinishPos;
+  if (teamMate === null) {
+    teamMateStartPos = 21;
+    teamMateFinishPos = 21;
+  } else {
+    teamMateStartPos = teamMate['grid'];
+    teamMateFinishPos = teamMate['position'];
+  }
+
+  const startPos = driver['grid'];
+  const finishPos = driver['position'];
+  let fastestLap = false;
+  if ('FastestLap' in driver) {fastestLap = (driver['FastestLap']['rank'] === 1);}
+  
+
+  // Qualifying
+
+  // Quali position bonus
+  fantasyPoints += Math.max(11 - startPos, 0);
+
+  // Q3
+  if (startPos < 11) {
+    fantasyPoints += 3;
+  }
+  // Q2
+  else if (startPos < 16) {
+    fantasyPoints += 2;
+  }
+  // Q1
+  else  {
+    fantasyPoints += 1;
+  }
+
+  // Beat team mate
+  if (startPos < teamMateStartPos) {fantasyPoints += 2};
+
+  //TODO: Add penalties from disqualification
+
+
+  // Race
+
+  // Finishing position bonus
+  if (finishPos < 11) {
+    fantasyPoints += mapping.pointsTable[finishPos];
+  }
+
+  //TODO: Add point for finished race
+
+  //TODO: Add points for fastest lap
+  if (fastestLap) {fantasyPoints += 5};
+
+  // Positions gained
+  fantasyPoints += Math.min(Math.max(startPos - finishPos, 0) * 2, 10);
+
+  // Beat team mate
+  if (finishPos < teamMateFinishPos) {fantasyPoints += 3};
+
+  //TODO: Add penalties
+
+
+  return fantasyPoints;
+};
