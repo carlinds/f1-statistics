@@ -1,4 +1,4 @@
-import icons from "../img/icons/*.png";
+import icons from "../../img/icons/*.png";
 
 class TableView {
   _tableBodyElement = document.querySelector(".table-body");

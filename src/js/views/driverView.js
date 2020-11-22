@@ -1,4 +1,4 @@
-import driverImages from "../img/driver_info/*.png";
+import driverImages from "../../img/driver_info/*.png";
 
 class DriverView {
     _driverInfoElement = document.querySelector('#driver__info');

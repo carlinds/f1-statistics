@@ -1,17 +1,5 @@
 import Chart from 'chart.js';
-
-const constructorColors = {
-  alfa: 'rgba(155, 0, 0, 0.8)',
-  alphatauri: 'rgba(70, 155, 255, 0.8)',
-  ferrari: 'rgba(220, 1, 1, 0.8)',
-  haas: '	rgba(190, 159, 89, 0.8)',
-  mclaren: 'rgba(255, 135, 0, 0.8)',
-  mercedes: '	rgba(0, 210, 190, 0.8)',
-  racing_point: 'rgba(245, 150, 200, 0.8)',
-  red_bull: 'rgba(30, 65, 255, 0.8)',
-  renault: 'rgba(255, 245, 0, 0.8)',
-  williams: 'rgba(245, 245, 245, 0.8)',
-};
+import * as mapping from '../mapping.js';
 
 class RaceChartView {
   _ctx = document.getElementById('race__chart').getContext('2d');
@@ -23,6 +11,10 @@ class RaceChartView {
       datasets: [],
     },
     options: {
+      title: {
+        display: true,
+        text: 'Constructor standings'
+      },
       maintainAspectRatio: false,
       scales: {
         yAxes: [
@@ -57,8 +49,8 @@ class RaceChartView {
       this._chart.data.datasets.push({
         label: value.name,
         data: value.data,
-        backgroundColor: constructorColors[key],
-        borderColor: constructorColors[key],
+        backgroundColor: mapping.constructorColors[key],
+        borderColor: mapping.constructorColors[key],
         fill: 'false',
       });
     }

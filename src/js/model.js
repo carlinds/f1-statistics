@@ -1,5 +1,6 @@
 import 'regenerator-runtime/runtime';
 import { async } from 'regenerator-runtime';
+import * as mapping from './mapping.js';
 
 export const fetchRaceEntries = async function (season) {
   try {
@@ -162,31 +163,82 @@ export const computeDriverDataset = async function (season, raceIndex, driverInf
     raceNames[i] = raceList[i].raceName;
   }
 
-  const driverPoints = await getDriverPoints(season, raceIndex, driverInfo['driverId']);
+  const driverRaceResults = await getDriverRaceResults(season, raceIndex, driverInfo);
 
-  return [driverPoints, raceNames, driverInfo];
+  return {'results': driverRaceResults,
+          'raceNames': raceNames,
+          'driverInfo': driverInfo};
 };
 
-const getDriverPoints = async function (season, raceIndex, driverId) {
-  // Get driver standings for each race
-  let driverPoints = [];
+const getDriverRaceResults = async function (season, raceIndex, driverInfo) {
+  const driverId = driverInfo['driverId'];
+  const constructor = mapping.constructorMap[driverInfo['driverId']];
+
+  let driver = {
+    points: [],
+    startPos: [],
+    finishPos: [],
+  }
+
+  let teamMate = {
+    id: [],
+    name: [],
+    points: [],
+    startPos: [],
+    finishPos: [],
+  }
+
+  let beatTeamMate = {
+    race: [],
+    quali: [],
+  }
+
+  // Loop over races
   for (let i = 0; i < raceIndex; i++) {
     let raceResults = await fetchRaceResults(season, i+1);
     let driverFound = false;
+    let teamMateFound = false;
 
+    // Loop over drivers
     for (let j = 0; j < raceResults.length; j++) {
-      let driver = raceResults[j];
-      if (driver['Driver']['driverId'] === driverId) {
-        driverPoints.push(parseInt(driver.points));
-        driverFound = true;
-        break;
+      let currDriver = raceResults[j];
+      let currDriverId = currDriver['Driver']['driverId'];
+
+      if (mapping.constructorMap[currDriverId] === constructor) {
+        if (currDriverId === driverId) {
+          driver['points'].push(parseInt(currDriver.points));
+          driver['finishPos'].push(parseInt(currDriver.position));
+          driver['startPos'].push(parseInt(currDriver.grid));
+          driverFound = true;
+        } else {
+          teamMate['name'].push(currDriver['Driver']['givenName'] + ' ' + currDriver['Driver']['familyName']);
+          teamMate['id'].push(currDriverId);
+          teamMate['points'].push(parseInt(currDriver.points));
+          teamMate['finishPos'].push(parseInt(currDriver.position));
+          teamMate['startPos'].push(parseInt(currDriver.grid));
+          teamMateFound = true;
+        }
       }
     }
 
+    // Special case when driver not in race
     if (!driverFound) {
-      driverPoints.push(0);
+      driver['points'].push(0);
+      driver['finishPos'].push(null);
+      driver['startPos'].push(null);
     }
+    if (!teamMateFound) {
+      teamMate['id'].push(null);
+      teamMate['points'].push(0);
+      teamMate['finishPos'].push(null);
+      teamMate['startPos'].push(null);
+    }
+
+    beatTeamMate['race'].push(driver['finishPos'][i] < teamMate['finishPos'][i]);
+    beatTeamMate['quali'].push(driver['startPos'][i] < teamMate['startPos'][i]);
   }
-  return driverPoints;
+  return {'driver': driver,
+          'teamMate': teamMate,
+          'beatTeamMate': beatTeamMate};
 };
 

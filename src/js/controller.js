@@ -1,8 +1,9 @@
 import * as model from "./model.js";
-import tableView from "./tableView.js";
-import raceChartView from "./raceChartView.js";
-import driverChartView from "./driverChartView.js";
-import driverView from "./driverView.js";
+import tableView from "./views/tableView.js";
+import raceChartView from "./views/raceChartView.js";
+import driverRaceChartView from "./views/driverRaceChartView.js";
+import driverQualiChartView from "./views/driverQualiChartView.js";
+import driverView from "./views/driverView.js";
 
 import "core-js/stable";
 import "regenerator-runtime/runtime";
@@ -33,7 +34,10 @@ class Controller {
       driverView.renderDriverInfo(driverInfo);
       return model.computeDriverDataset(season, 'last', driverInfo);
     })
-    .then((dataset) => driverChartView.renderDataset(dataset));
+    .then((dataset) => {
+      driverRaceChartView.renderDataset(dataset);
+      driverQualiChartView.renderDataset(dataset);
+    });
   };
   
   init() {
