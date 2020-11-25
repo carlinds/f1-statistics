@@ -38,25 +38,25 @@ class DriverQualiChartView {
   });
 
   renderDataset(dataset) {
-    const results = dataset['results'];
+    const raceResults = dataset['raceResults'];
     const raceNames = dataset['raceNames'];
     const driverInfo = dataset['driverInfo'];
-    const constructor = results['driver'][0]['Constructor']['constructorId'];
+    const constructor = raceResults['driver'][0]['Constructor']['constructorId'];
 
     let driverQualiPos = [];
     let teamMateQualiPos = [];
-    for (let i = 0; i < results['driver'].length; i++) {
-      for (let i = 0; i < results['driver'].length; i++) {
-        if (results['driver'][i] === null) {
+    for (let i = 0; i < raceResults['driver'].length; i++) {
+      for (let i = 0; i < raceResults['driver'].length; i++) {
+        if (raceResults['driver'][i] === null) {
           driverQualiPos.push(null);
         } else {
-          driverQualiPos.push(results['driver'][i]['grid']);
+          driverQualiPos.push(raceResults['driver'][i]['grid']);
         }
         
-        if (results['teamMate'][i] === null) {
+        if (raceResults['teamMate'][i] === null) {
           teamMateQualiPos.push(null);
         } else {
-          teamMateQualiPos.push(results['teamMate'][i]['grid']);
+          teamMateQualiPos.push(raceResults['teamMate'][i]['grid']);
         }
       };
     };
@@ -71,8 +71,8 @@ class DriverQualiChartView {
         fill: 'false',
       },
       {
-        label: results['teamMate'][0]['Driver']['givenName'] + ' ' 
-             + results['teamMate'][0]['Driver']['familyName'],
+        label: raceResults['teamMate'][0]['Driver']['givenName'] + ' ' 
+             + raceResults['teamMate'][0]['Driver']['familyName'],
         data: teamMateQualiPos,
         backgroundColor: mapping.constructorColors[constructor],
         borderColor: mapping.constructorColors[constructor],

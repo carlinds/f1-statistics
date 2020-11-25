@@ -38,26 +38,24 @@ class DriverRaceChartView {
   });
 
   renderDataset(dataset) {
-    const results = dataset['results'];
+    const raceResults = dataset['raceResults'];
     const raceNames = dataset['raceNames'];
     const driverInfo = dataset['driverInfo'];
-    const constructor = results['driver'][0]['Constructor']['constructorId'];//mapping.constructorMap[driverInfo['driverId']];
-
-    console.log(results);
+    const constructor = raceResults['driver'][0]['Constructor']['constructorId'];//mapping.constructorMap[driverInfo['driverId']];
 
     let driverPoints = [];
     let teamMatePoints = [];
-    for (let i = 0; i < results['driver'].length; i++) {
-      if (results['driver'][i] === null) {
+    for (let i = 0; i < raceResults['driver'].length; i++) {
+      if (raceResults['driver'][i] === null) {
         driverPoints.push(0);
       } else {
-        driverPoints.push(results['driver'][i]['points']);
+        driverPoints.push(raceResults['driver'][i]['points']);
       }
       
-      if (results['teamMate'][i] === null) {
+      if (raceResults['teamMate'][i] === null) {
         teamMatePoints.push(0);
       } else {
-        teamMatePoints.push(results['teamMate'][i]['points']);
+        teamMatePoints.push(raceResults['teamMate'][i]['points']);
       }
     };
 
@@ -71,8 +69,8 @@ class DriverRaceChartView {
         fill: 'false',
       },
       {
-        label: results['teamMate'][0]['Driver']['givenName'] + ' ' 
-             + results['teamMate'][0]['Driver']['familyName'],
+        label: raceResults['teamMate'][0]['Driver']['givenName'] + ' ' 
+             + raceResults['teamMate'][0]['Driver']['familyName'],
         data: teamMatePoints,
         backgroundColor: mapping.constructorColors[constructor],
         borderColor: mapping.constructorColors[constructor],

@@ -38,16 +38,15 @@ class DriverView {
     };
 
     renderFantasyPoints(dataset) {
-
-        let fantasyMean = Math.round(mean(dataset['results']['fantasyPoints']) * 100)/100;
-        let fantasyStd = Math.round(std(dataset['results']['fantasyPoints']) * 100)/100;
+        let fantasyMean = Math.round(mean(dataset['fantasyPoints']) * 100)/100;
+        let fantasyStd = Math.round(std(dataset['fantasyPoints']) * 100)/100;
 
         let htmlRows = ``;
         for (let i = 0; i < dataset['raceNames'].length; i++) {
             htmlRows += `
                 <tr>
                     <td>${dataset['raceNames'][i]}</td>
-                    <td>${dataset['results']['fantasyPoints'][i]}</td>
+                    <td>${dataset['fantasyPoints'][i]}</td>
                 </tr>`;
         }
 
