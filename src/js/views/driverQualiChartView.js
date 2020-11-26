@@ -39,24 +39,25 @@ class DriverQualiChartView {
 
   renderDataset(dataset) {
     const raceResults = dataset['raceResults'];
+    const qualiResults = dataset['qualiResults'];
     const raceNames = dataset['raceNames'];
     const driverInfo = dataset['driverInfo'];
     const constructor = raceResults['driver'][0]['Constructor']['constructorId'];
 
     let driverQualiPos = [];
     let teamMateQualiPos = [];
-    for (let i = 0; i < raceResults['driver'].length; i++) {
-      for (let i = 0; i < raceResults['driver'].length; i++) {
-        if (raceResults['driver'][i] === null) {
+    for (let i = 0; i < qualiResults['driver'].length; i++) {
+      for (let i = 0; i < qualiResults['driver'].length; i++) {
+        if (qualiResults['driver'][i] === null) {
           driverQualiPos.push(null);
         } else {
-          driverQualiPos.push(raceResults['driver'][i]['grid']);
+          driverQualiPos.push(parseInt(qualiResults['driver'][i]['QualifyingResults'][0]['position']));
         }
         
-        if (raceResults['teamMate'][i] === null) {
+        if (qualiResults['teamMate'][i] === null) {
           teamMateQualiPos.push(null);
         } else {
-          teamMateQualiPos.push(raceResults['teamMate'][i]['grid']);
+          teamMateQualiPos.push(parseInt(qualiResults['teamMate'][i]['QualifyingResults'][0]['position']));
         }
       };
     };

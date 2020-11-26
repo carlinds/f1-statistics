@@ -298,13 +298,14 @@ const calculateFantasyPoints = function(driverRes, teamMateRes, driverQualy, tea
   // -------------------------- Qualifying --------------------------
   // Quali position bonus
   fantasyPoints += Math.max(11 - driverQualyPos, 0);
+  
 
   // Q3
-  if ('Q3' in driverQualy['QualifyingResults'][0]) {
+  if (driverQualyPos < 11) {
     fantasyPoints += 3;
   }
   // Q2
-  else if ('Q2' in driverQualy['QualifyingResults'][0]) {
+  else if (driverQualyPos < 16) {
     fantasyPoints += 2;
   }
   // Q1
@@ -329,7 +330,7 @@ const calculateFantasyPoints = function(driverRes, teamMateRes, driverQualy, tea
   }
 
   // Finished race
-  if (driverRes['positionText'] !== 'R' ) {
+  if (driverRes['positionText'] === finishPos.toString()) {
     fantasyPoints += 1
 
     // Positions gained
@@ -345,22 +346,22 @@ const calculateFantasyPoints = function(driverRes, teamMateRes, driverQualy, tea
     }
   }
 
-  // Beat team mate race
-  if (finishPos < teamMateFinishPos) {
-    fantasyPoints += 3;
-  }
-
   // Fastest lap
   if (fastestLap) {
     fantasyPoints += 5;
   }
 
   // Retired
-  if (driverRes['positionText'] === 'R') {
+  if (driverRes['positionText'] !== finishPos.toString()) {
     fantasyPoints -= 15;
+  } else {
+    // Beat team mate race
+    if (finishPos < teamMateFinishPos) {
+      fantasyPoints += 3;
+    }
   }
 
-  //TODO: Add penalties
+  //TODO: Add penalties for disqualification
 
   return fantasyPoints;
 };

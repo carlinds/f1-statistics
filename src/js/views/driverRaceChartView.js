@@ -41,7 +41,7 @@ class DriverRaceChartView {
     const raceResults = dataset['raceResults'];
     const raceNames = dataset['raceNames'];
     const driverInfo = dataset['driverInfo'];
-    const constructor = raceResults['driver'][0]['Constructor']['constructorId'];//mapping.constructorMap[driverInfo['driverId']];
+    const constructor = raceResults['driver'][0]['Constructor']['constructorId'];
 
     let driverPoints = [];
     let teamMatePoints = [];
