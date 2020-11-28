@@ -1,24 +1,24 @@
 import driverImages from "../../img/driver_info/*.png";
-import { mean, std } from 'mathjs';
+import { mean, std } from "mathjs";
 
 class DriverView {
-    _driverInfoElement = document.querySelector('#driver__info');
-    _driverImageContainer = document.querySelector('#driver__image__container');
-    _driverImageElement = document.querySelector('#driver__image');
-    _driverTextContainer = document.querySelector('#driver__text__container');
-    _driverFantasyPointsContainer = document.querySelector('#driver__fantasy');
+  _driverInfoElement = document.querySelector("#driver__info");
+  _driverImageContainer = document.querySelector("#driver__image__container");
+  _driverImageElement = document.querySelector("#driver__image");
+  _driverTextContainer = document.querySelector("#driver__text__container");
+  _driverFantasyPointsContainer = document.querySelector("#driver__fantasy");
 
-    renderDriverInfo(driverInfo) {
-        this.renderDriverImage(driverInfo["driverId"]);
-        this.renderDriverText(driverInfo);
-    }
+  renderDriverInfo(driverInfo) {
+    this.renderDriverImage(driverInfo["driverId"]);
+    this.renderDriverText(driverInfo);
+  }
 
-    renderDriverImage(driverId) {
-        this._driverImageElement.src = driverImages[driverId];
-    };
+  renderDriverImage(driverId) {
+    this._driverImageElement.src = driverImages[driverId];
+  }
 
-    renderDriverText(driverInfo) {
-        this._driverTextContainer.innerHTML = `
+  renderDriverText(driverInfo) {
+    this._driverTextContainer.innerHTML = `
             <h1>${driverInfo["givenName"]} ${driverInfo["familyName"]}</h1>
             <table>
                 <tr>
@@ -35,22 +35,22 @@ class DriverView {
                 </tr>
             </table>
         `;
-    };
+  }
 
-    renderFantasyPoints(dataset) {
-        let fantasyMean = Math.round(mean(dataset['fantasyPoints']) * 100)/100;
-        let fantasyStd = Math.round(std(dataset['fantasyPoints']) * 100)/100;
+  renderFantasyPoints(dataset) {
+    let fantasyMean = Math.round(mean(dataset["fantasyPoints"]) * 100) / 100;
+    let fantasyStd = Math.round(std(dataset["fantasyPoints"]) * 100) / 100;
 
-        let htmlRows = ``;
-        for (let i = 0; i < dataset['raceNames'].length; i++) {
-            htmlRows += `
+    let htmlRows = ``;
+    for (let i = 0; i < dataset["raceNames"].length; i++) {
+      htmlRows += `
                 <tr>
-                    <td>${dataset['raceNames'][i]}</td>
-                    <td>${dataset['fantasyPoints'][i]}</td>
+                    <td>${dataset["raceNames"][i]}</td>
+                    <td>${dataset["fantasyPoints"][i]}</td>
                 </tr>`;
-        }
+    }
 
-        this._driverFantasyPointsContainer.innerHTML = `
+    this._driverFantasyPointsContainer.innerHTML = `
             <h1>Fantasy points</h1>
             <table id="ftable__left" class="fantasy-table">
                 <thead>
@@ -82,11 +82,8 @@ class DriverView {
                     </tr>
                     
                 </tbody>
-            </table>`
-        
-
-
-    };
-};
+            </table>`;
+  }
+}
 
 export default new DriverView();
